@@ -26,20 +26,24 @@ namespace SchoolApplication.Repositories
 
         public void Delete(Student obj)
         {
-           _context.Set<Student>().Remove(obj);
-            
-           // var existing = _context.Set<Student>().Find(obj.Id);
-           //if(existing != null)
-           // {
+            // _context.Set<Student>().Remove(obj);
+            try
+            {
+                var entry = _context.Students.Find(obj.Id);
+                if (entry != null)
+                {
+                    _context.Remove(entry);
+                    _context.Entry(entry).State = EntityState.Deleted;
+                }
+                else Console.WriteLine("no student to delete");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("No student to delete");
+            }
 
-           // _context.Set<Student>().Remove(existing);
-           //     _context.SaveChanges();
-           //     return true;
-           // }
-           // else { Console.WriteLine("No student to delete"); }
 
-           // return false;   
-            
+
         }
 
         public IEnumerable<Student> GetAll()
